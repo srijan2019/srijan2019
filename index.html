@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Srijan 2019 | Campus Ambassador</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <script>
     function validateData(name, phone, inst) {
@@ -24,11 +27,32 @@
         }
         return errors;
     }
+    function addError(form, target, error) {
+        if (error !== undefined) {
+            var error_text = document.getElementById(target+"_error");
+            if (error_text === null) {
+                error_text = document.createElement("div");
+                error_text.className = "error error_text";
+                error_text.id = target+"_error";
+                error_text.style.top = (form.offsetTop) + "px";
+                error_text.style.left = (form.offsetLeft + 14) + "px";
+                form.parentElement.appendChild(error_text);
+            }
+            form.className = "error";
+            error_text.innerHTML = error;
+        } else {
+            var error_text = document.getElementById(target+"_error");
+            if (error_text !== null) {
+                form.parentElement.removeChild(error_text);
+                form.className = "";
+            }
+        }
+    }
     function submitData() {
         var form = document.forms["campus_ambassador"];
         var form_name = form["name"].value;
         var form_phone = form["phone"].value;
-        var form_institution = form["institution"].value;
+        var form_institution = form["inst"].value;
         var form_errors = validateData(form_name, form_phone, form_institution);
         if (form_errors["name"] === undefined && form_errors["phone"] === undefined && form_errors["inst"] === undefined) {
             var request = new XMLHttpRequest();
@@ -49,12 +73,23 @@
             console.log(send_json);
             request.send(send_json);
         } else {
-            console.log(form_errors);
+            addError(form["name"], "name", form_errors["name"]);
+            addError(form["phone"], "phone", form_errors["phone"]);
+            addError(form["inst"], "inst", form_errors["inst"]);
         }
         return false;
     }
+    function removeError(e) {
+        var target = e.target.name;
+        var target_error = document.getElementById(target+"_error");
+        if (target_error !== null) {
+            var form = document.forms["ca_form"];
+            form.removeChild(target_error);
+            form[target].className = "";
+        }
+    }
     window.onload = function(e) {
-        var ins_dropdown = document.forms["campus_ambassador"]["institution"];
+        var ins_dropdown = document.forms["campus_ambassador"]["inst"];
         var request = new XMLHttpRequest();
         request.addEventListener("load", function(e) {
             var response = JSON.parse(request.responseText);
@@ -73,13 +108,22 @@
     }
 </script>
 <body>
-    <form action="" name="campus_ambassador" onsubmit="return submitData()">
-        <input type="string" placeholder="Name" name="name" /> <br />
-        <input type="string" placeholder="Phone" name="phone" /> <br />
-        <select name="institution" >
-            <option value="" disabled selected>Institution</option>
-        </select> <br />
-        <input type="submit" value="Submit" />
-    </form>
+    <img id="ca_back" src="img/cam_amb_back.svg" alt="" />
+    <main>
+        <h1>Campus Ambassador</h1>
+        <form id="ca_form" action="" mode="POST" name="campus_ambassador" onsubmit="return submitData()">
+            <input type="string" placeholder="Name" name="name" onfocus="removeError(event)" onblur="removeError(event)" /> <br />
+            <input type="string" placeholder="Phone" name="phone" onfocus="removeError(event)" onblur="removeError(event)" /> <br />
+            <select name="inst" onfocus="removeError(event)" onblur="removeError(event)"  onchange="removeError(event)"  onselect="removeError(event)" >
+                <option value="" disabled selected>Institution</option>
+            </select> <br />
+            <input type="submit" value="Submit" />
+        </form>
+    </main>
+    <footer>
+        <p>Srijan 2019.</p>
+        <p>Designed and developed by Vivek Roy.</p>
+        <p>Faculty of Engineering and Technology, Jadavpur University.<br/>2018-2019. All rights reserved.</p>
+    </footer>
 </body>
 </html>

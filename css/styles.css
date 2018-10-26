@@ -1,0 +1,99 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #050505;
+    color: white;
+    overflow-x: hidden;
+}
+
+* {
+    box-sizing: border-box !important;
+    font-family: Lato !important;
+}
+
+#ca_back {
+    background: rgb(227,168,186);
+    background: radial-gradient(circle at 10% 60%, rgba(227,168,186,1) 8%, rgba(192,117,158,1) 22%, rgba(18,61,165,1) 100%);
+    overflow: hidden;
+    width: 130%;
+    padding-top: 2rem;
+    z-index: -100;
+}
+
+main {
+    width: 90%;
+    max-width: 400px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+main h1 {
+    font-size: 2.5em;
+    font-weight: normal;
+    text-shadow: 0 0 15px black;
+}
+
+#ca_form > input, #ca_form > select {
+    margin: 0.5em 0;
+    padding: 0.5em 0.75em;
+    border: 0;
+    border-radius: 3px;
+    outline: 0;
+    box-sizing: border-box !important;
+    width: 100%;
+    font-size: 1.2em;
+    line-height: 1.6;
+    box-shadow: 0 1px 5px #2d2d2d;
+    background: #ffffff;
+}
+
+#ca_form > *, #ca_form > *::placeholder {
+    color: #2d2d2d !important;
+}
+
+.error_text {
+    font-size: 14px;
+    position: absolute;
+}
+
+#ca_form > .error, #ca_form > .error::placeholder {
+    color: red !important;
+}
+
+#ca_form input[type="submit"] {
+    margin-top: 1em;
+    background: #4caf50;
+    cursor: pointer;
+    text-transform: uppercase;
+    color: black !important;
+}
+
+footer {
+    background: #252525;
+    margin: 3em 0 0 0;
+    padding: 1.5rem 5%;
+}
+
+@media only screen and (min-width: 640px) {
+    #ca_back {
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    main {
+        position: absolute;
+        top: 4rem;
+        left: 10%;
+    }
+    #ca_back {
+        padding-top: 20rem;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    #ca_back {
+        padding-top: 15rem;
+    }
+}
+
