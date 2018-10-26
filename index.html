@@ -7,106 +7,7 @@
     <title>Srijan 2019 | Campus Ambassador</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<script>
-    function validateData(name, phone, inst) {
-        var errors = {};
-        if (name == "") {
-            errors["name"] = "Please enter name";
-        } else if (name.split(" ").length < 2) {
-            errors["name"] = "Please enter fullname";
-        }
-        if (phone == "") {
-            errors["phone"] = "Please enter phone number";
-        } else if (phone.length != 10) {
-            errors["phone"] = "Please enter 10 digit phone number";
-        } else if (phone.match(/^\d{10}$/) === null) {
-            errors["phone"] = "Please enter a valid 10 digit phone number";
-        }
-        if (inst == "") {
-            errors["inst"] = "Please select an institution";
-        }
-        return errors;
-    }
-    function addError(form, target, error) {
-        if (error !== undefined) {
-            var error_text = document.getElementById(target+"_error");
-            if (error_text === null) {
-                error_text = document.createElement("div");
-                error_text.className = "error error_text";
-                error_text.id = target+"_error";
-                error_text.style.top = (form.offsetTop) + "px";
-                error_text.style.left = (form.offsetLeft + 14) + "px";
-                form.parentElement.appendChild(error_text);
-            }
-            form.className = "error";
-            error_text.innerHTML = error;
-        } else {
-            var error_text = document.getElementById(target+"_error");
-            if (error_text !== null) {
-                form.parentElement.removeChild(error_text);
-                form.className = "";
-            }
-        }
-    }
-    function submitData() {
-        var form = document.forms["campus_ambassador"];
-        var form_name = form["name"].value;
-        var form_phone = form["phone"].value;
-        var form_institution = form["inst"].value;
-        var form_errors = validateData(form_name, form_phone, form_institution);
-        if (form_errors["name"] === undefined && form_errors["phone"] === undefined && form_errors["inst"] === undefined) {
-            var request = new XMLHttpRequest();
-            request.addEventListener("load", function(e) {
-                var response = JSON.parse(request.responseText);
-                if (request.status === 200) {
-                    console.log("Success:", response);
-                } else {
-                    console.log("Error:", response);
-                }
-            });
-            request.addEventListener("error", function(e) {
-                console.log("Error:", e);
-            });
-            request.open("POST", "https://srijan2019-b0bbc.firebaseio.com/campus_ambassador/"+form_institution+".json");
-            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            var send_json = JSON.stringify({"name": form_name, "phone": form_phone});
-            console.log(send_json);
-            request.send(send_json);
-        } else {
-            addError(form["name"], "name", form_errors["name"]);
-            addError(form["phone"], "phone", form_errors["phone"]);
-            addError(form["inst"], "inst", form_errors["inst"]);
-        }
-        return false;
-    }
-    function removeError(e) {
-        var target = e.target.name;
-        var target_error = document.getElementById(target+"_error");
-        if (target_error !== null) {
-            var form = document.forms["ca_form"];
-            form.removeChild(target_error);
-            form[target].className = "";
-        }
-    }
-    window.onload = function(e) {
-        var ins_dropdown = document.forms["campus_ambassador"]["inst"];
-        var request = new XMLHttpRequest();
-        request.addEventListener("load", function(e) {
-            var response = JSON.parse(request.responseText);
-            for (var key in response) {
-                var ins_option = document.createElement("option");
-                ins_option.value = key;
-                ins_option.text = response[key];
-                ins_dropdown.add(ins_option);
-            }
-        });
-        request.addEventListener("error", function(e) {
-            console.log("Error fetching institution names");
-        });
-        request.open("GET", "https://srijan2019-b0bbc.firebaseio.com/institutions.json", true);
-        request.send();
-    }
-</script>
+<script src="js/ca.js"></script>
 <body>
     <img id="ca_back" src="img/cam_amb_back.svg" alt="" />
     <main>
@@ -120,6 +21,7 @@
             <input type="submit" value="Submit" />
         </form>
     </main>
+    <div id="notify-list"></div>
     <footer>
         <p>Srijan 2019.</p>
         <p>Designed and developed by Vivek Roy.</p>
